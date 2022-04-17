@@ -1,0 +1,262 @@
+<head>
+    <title>SmartFit</title>
+    <link rel="shortcut icon" type="image/png" sizes="32x32" href="/media/logo.png">
+</head>
+<style type = "text/css">
+    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+    * {
+        box-sizing: border-box;
+    }
+
+    #drop_zone {
+        border: 5px solid blue;
+        width:  400px;
+        height: 400px;
+    }
+
+    #drop_zone:hover {
+        color: grey;
+    }
+
+    body {
+        background: #ecf1ff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-family: 'Montserrat', sans-serif;
+        height: 100vh;
+        margin: -20px 0 50px;
+    }
+
+    h1 {
+        font-weight: normal;
+        margin: 0;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    p {
+        font-size: 16px;
+        font-weight: 100;
+        line-height: 20px;
+        letter-spacing: 0.5px;
+        margin: 20px 0 30px;
+    }
+
+    span {
+        font-size: 12px;
+    }
+
+    a {
+        color: #333;
+        font-size: 14px;
+        text-decoration: none;
+        margin: 15px 0;
+    }
+
+    pre {
+        color: #333;
+        font-size: 14px;
+        text-decoration: none;
+        margin: 15px 0;
+    }
+    button {
+        border-radius: 20px;
+        border: 1px solid #1a98ca;
+        background-color: #659df0;
+        color: #FFFFFF;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 12px 45px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: transform 80ms ease-in;
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+    button:focus {
+        outline: none;
+    }
+
+    button.ghost {
+        background-color: transparent;
+        border-color: #FFFFFF;
+    }
+
+    form {
+        background-color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 50px;
+        height: 100%;
+        text-align: center;
+    }
+    
+    footer {
+        background-color: #222;
+        color: #fff;
+        font-size: 14px;
+        bottom: 0;
+        position: fixed;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 999;
+    }
+
+    footer p {
+        margin: 10px 0;
+    }
+
+    footer i {
+        color: red;
+    }
+
+    footer a {
+        color: #3c97bf;
+        text-decoration: none;
+    }
+
+
+    input {
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 35%;
+        height:50px;
+        vertical-align: middle;
+    }
+
+    .button-div{
+        width:100%;
+        margin: 0 auto;
+        margin-top:2%;
+        display: inline;
+        align-items: center;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .header{
+        background-color: #bbcaf5;
+        width: 100%;
+        height:10%;
+        display:inline-flex;
+        position:absolute;
+        top:0%;
+    }
+    
+    .info{
+        margin-top:20%;
+    }
+
+    .main-container{
+        background-color:#d5e2ff;
+        width: 35%;
+        height:80%; 
+        margin-top:2%;
+        align-items: center;
+        align-content: center;
+        text-align: center;
+    }
+
+    * {box-sizing:border-box}
+
+    /* Slideshow container */
+    .slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+    }
+
+    /* Caption text */
+    .text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    }
+
+</style>
+<div class="header">
+    <div>
+        <a href="./"><h1 style = "margin-top:20px;margin-left:20px">SmartFit</h1></a>
+    </div>
+    <img src="./media/logo.png" style = "padding:7.5px;margin-left:0.5%;z-index:3;vertical-align:center;margin-top:0.5%">
+</div>
+<br><br><br><br>
+
+<body>
+    <br><br><br>
+    <h1 style = "color:rgb(0, 0, 0); font-weight: normal; margin-top:0%">Check what clothes are in the outfit!</h1>
+    <div class="main-container">
+        <h1 style = "font-size: 20px; margin-top: 20px">Upload an Image</h1><br>
+        <img src = {{img}} id="output" width="400dp" height="80%"/>
+    </div><hr>
+    <form action="{% url 'submit' %}" enctype = "multipart/form-data" method="post" id="imgform" style="background-color:#ecf1ff;height:50px; width:35%">
+        <input type="file" style="height:100%;width:100%;padding:5px" accept="image/*" id="myfile" name="myfile" onchange="showPreview(event)">
+    </form>   
+    <button type = "submit" form = "imgform" value="Submit">submit</button> 
+    <div class="data">
+        <p>
+            Top: {{top}}&emsp;&emsp;
+            Bottom: {{bottom}}
+        </p>
+    </div>
+</body>
+<script type="text/javascript">
+    $('#drop_zone').on('drop dragdrop',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).html('').css('background','white');
+        var output = document.getElementById('output');
+    });
+    $('#drop_zone').on('dragenter',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+    })
+    $('#drop_zone').on('dragleave',function(){
+        event.preventDefault();
+        event.stopPropagation();
+        $(this).html('Drag one or more files to this Drop Zone ...').css('background','white');
+    });
+    $('#drop_zone').on('dragover',function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        $(this).html('drop now').css('background','blue');
+    });
+    
+    function showPreview(event){
+        if(event.target.files.length > 0){
+            var src = URL.createObjectURL(event.target.files[0]);
+            var img = document.getElementById("output");
+            img.src = src;
+            output.onload = function() {
+                URL.revokeObjectURL(output.src);
+            }
+        }
+    }
+</script>
